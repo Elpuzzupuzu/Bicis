@@ -2,32 +2,32 @@
 const bicicletaService = require('../services/bicicletaService');
 
 class BicicletaController {
-  obtenerBicicletas(req, res) {
+  async obtenerBicicletas(req, res) {
     try {
-      const bicicletas = bicicletaService.obtenerTodasLasBicicletas();
-      res.status(200).json(bicicletas);
+      const bicicletas = await bicicletaService.obtenerTodasLasBicicletas();
+      return bicicletas;
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      throw new Error(error.message); // Lanza el error para manejarlo en app.js
     }
   }
 
-  obtenerBicicletaPorModelo(req, res) {
+  async obtenerBicicletaPorModelo(req, res) {
     const { modelo } = req.params;
     try {
-      const bicicleta = bicicletaService.obtenerBicicletaPorModelo(modelo);
-      res.status(200).json(bicicleta);
+      const bicicleta = await bicicletaService.obtenerBicicletaPorModelo(modelo);
+      return bicicleta;
     } catch (error) {
-      res.status(404).json({ message: error.message });
+      throw new Error(error.message); // Lanza el error para manejarlo en app.js
     }
   }
 
-  crearBicicleta(req, res) {
+  async crearBicicleta(req, res) {
     const nuevaBicicleta = req.body;
     try {
-      const bicicletaCreada = bicicletaService.crearBicicleta(nuevaBicicleta);
-      res.status(201).json(bicicletaCreada);
+      const bicicletaCreada = await bicicletaService.crearBicicleta(nuevaBicicleta);
+      return bicicletaCreada;
     } catch (error) {
-      res.status(400).json({ message: error.message });
+      throw new Error(error.message); // Lanza el error para manejarlo en app.js
     }
   }
 }

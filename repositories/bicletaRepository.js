@@ -1,19 +1,17 @@
 // repositories/bicicletaRepository.js
-const bicicletasData = require('../data/bicicletas');
+const Bicicleta = require('../models/bicicletaModel');
 
 class BicicletaRepository {
-  findAll() {
-    return bicicletasData;
+  async findAll() {
+    return await Bicicleta.findAll();
   }
 
-  findByModel(modelo) {
-    return bicicletasData.find(bicicleta => bicicleta.modelo === modelo);
+  async findByModel(modelo) {
+    return await Bicicleta.findOne({ where: { modelo } });
   }
 
-  // Método para agregar una bicicleta (simulación)
-  addBicicleta(bicicleta) {
-    bicicletasData.push(bicicleta);
-    return bicicleta;
+  async addBicicleta(bicicletaData) {
+    return await Bicicleta.create(bicicletaData);
   }
 }
 

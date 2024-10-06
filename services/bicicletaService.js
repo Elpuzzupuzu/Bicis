@@ -3,22 +3,36 @@ const bicicletaRepository = require('../repositories/bicletaRepository');
 const Bicicleta = require('../models/bicicletaModel');
 
 class BicicletaService {
-  obtenerTodasLasBicicletas() {
-    return bicicletaRepository.findAll();
+  async obtenerTodasLasBicicletas() {
+    return await bicicletaRepository.findAll(); // Usa await para esperar la promesa
   }
 
-  obtenerBicicletaPorModelo(modelo) {
-    const bicicleta = bicicletaRepository.findByModel(modelo);
+  async obtenerBicicletaPorModelo(modelo) {
+    const bicicleta = await bicicletaRepository.findByModel(modelo); // Usa await
     if (!bicicleta) {
       throw new Error('Bicicleta no encontrada');
     }
     return bicicleta;
   }
 
-  crearBicicleta(datosBicicleta) {
+  async crearBicicleta(datosBicicleta) {
     const { marca, modelo, tipo, tamaño, color, precio, material, peso, cambio, disponible } = datosBicicleta;
-    const nuevaBicicleta = new Bicicleta(marca, modelo, tipo, tamaño, color, precio, material, peso, cambio, disponible);
-    return bicicletaRepository.addBicicleta(nuevaBicicleta);
+
+    // Crea la nueva bicicleta con las propiedades adecuadas
+    const nuevaBicicleta = {
+      marca,
+      modelo,
+      tipo,
+      tamaño,
+      color,
+      precio,
+      material,
+      peso,
+      cambio,
+      disponible
+    };
+
+    return await bicicletaRepository.addBicicleta(nuevaBicicleta); // Usa await
   }
 }
 
