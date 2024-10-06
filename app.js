@@ -1,48 +1,21 @@
-// app.js
 const express = require('express');
+const morgan = require('morgan'); // Importar Morgan
 const bicicletaController = require('./controllers/bicicletaController');
 const sequelize = require('./config/database'); // Importamos la conexión
-const validarBicicleta = require('./middleware/validarBicicleta'); // Middleware para validar bicicleta
 
 const app = express();
 const port = 3000;
 
-// Middleware para registrar solicitudes
-app.use((req, res, next) => {
-  console.log(`${req.method} ${req.url}`);
-  next();
-});
+// Middleware para Morgan: registro de solicitudes HTTP
+app.use(morgan('dev')); // Modo 'dev' muestra logs concisos de las solicitudes
 
 // Middleware para parsear JSON
 app.use(express.json());
 
 // Rutas
-app.get('/bicicletas', async (req, res) => {
-  try {
-    const bicicletas = await bicicletaController.obtenerBicicletas(req, res);
-    res.status(200).json(bicicletas);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-app.get('/bicicletas/:modelo', async (req, res) => {
-  try {
-    const bicicleta = await bicicletaController.obtenerBicicletaPorModelo(req, res);
-    res.status(200).json(bicicleta);
-  } catch (error) {
-    res.status(404).json({ message: error.message });
-  }
-});
-
-app.post('/bicicletas', validarBicicleta, async (req, res) => {
-  try {
-    const bicicletaCreada = await bicicletaController.crearBicicleta(req, res);
-    res.status(201).json(bicicletaCreada);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
+app.get('/bicicletas', (req, res) => bicicletaController.obtenerBicicletas(req, res));
+app.get('/bicicletas/:modelo', (req, res) => bicicletaController.obtenerBicicletaPorModelo(req, res));
+app.post('/bicicletas', (req, res) => bicicletaController.crearBicicleta(req, res));
 
 // Sincronizamos Sequelize con la base de datos
 sequelize.sync()
