@@ -1,11 +1,17 @@
 const express = require('express');
 const morgan = require('morgan'); // Importar Morgan
+const cors = require('cors'); // Importar CORS
+
 const bicicletaController = require('./controllers/bicicletaController');
 const validarBicicleta = require('./middleware/validarBicicleta'); // Importa el middleware
 const sequelize = require('./config/database'); // Importamos la conexión
 
 const app = express();
 const port = 3000;
+
+// habilita cors
+app.use(cors()); // Habilitar CORS
+
 
 // Middleware para Morgan: registro de solicitudes HTTP
 app.use(morgan('dev')); // Modo 'dev' muestra logs concisos de las solicitudes
