@@ -1,39 +1,55 @@
 // services/bicicletaService.js
 const bicicletaRepository = require('../repositories/bicletaRepository');
-const Bicicleta = require('../models/bicicletaModel');
 
 class BicicletaService {
-  async obtenerTodasLasBicicletas() {
-    return await bicicletaRepository.findAll(); // Usa await para esperar la promesa
+  obtenerTodasLasBicicletas() {
+    return bicicletaRepository.findAll();
   }
 
-  async obtenerBicicletaPorModelo(modelo) {
-    const bicicleta = await bicicletaRepository.findByModel(modelo); // Usa await
+  obtenerBicicletaPorModelo(modelo) {
+    const bicicleta = bicicletaRepository.findByModel(modelo);
     if (!bicicleta) {
       throw new Error('Bicicleta no encontrada');
     }
     return bicicleta;
   }
 
-  async crearBicicleta(datosBicicleta) {
-    const { marca, modelo, tipo, tamaño, color, precio, material, peso, cambio, disponible } = datosBicicleta;
-
-    // Crea la nueva bicicleta con las propiedades adecuadas
-    const nuevaBicicleta = {
-      marca,
-      modelo,
-      tipo,
-      tamaño,
-      color,
-      precio,
-      material,
-      peso,
-      cambio,
-      disponible
-    };
-
-    return await bicicletaRepository.addBicicleta(nuevaBicicleta); // Usa await
+  obtenerBicicletaPorId(id) {
+    const bicicleta = bicicletaRepository.findById(id);
+    if (!bicicleta) {
+      throw new Error('Bicicleta no encontrada');
+    }
+    return bicicleta;
   }
+
+  crearBicicleta(datosBicicleta) {
+    const { marca, modelo, tipo, tamaño, color, precio, material, peso, cambio, disponible } = datosBicicleta;
+    const nuevaBicicleta = { marca, modelo, tipo, tamaño, color, precio, material, peso, cambio, disponible };
+    return bicicletaRepository.addBicicleta(nuevaBicicleta);
+  }
+
+
+  async actualizarBicicleta(id, datosActualizados) {
+    const bicicleta = await bicicletaRepository.findById(id);
+    if (!bicicleta) {
+      throw new Error('Bicicleta no encontrada');
+    }
+    return await bicicletaRepository.updateBicicleta(id, datosActualizados);
+  }
+
+
 }
+
+
+  
+
+
+
+
+
+
+
+
+
 
 module.exports = new BicicletaService();

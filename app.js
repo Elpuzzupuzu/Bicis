@@ -15,7 +15,12 @@ app.use(express.json());
 // Rutas
 app.get('/bicicletas', (req, res) => bicicletaController.obtenerBicicletas(req, res));
 app.get('/bicicletas/:modelo', (req, res) => bicicletaController.obtenerBicicletaPorModelo(req, res));
+app.get('/bicicletas/id/:id', (req, res) => bicicletaController.obtenerBicicletaPorId(req, res)); // NUEVA RUTA POR ID
+
 app.post('/bicicletas', (req, res) => bicicletaController.crearBicicleta(req, res));
+
+app.put('/bicicletas/:id', (req, res) => bicicletaController.actualizarBicicleta(req, res));
+
 
 // Sincronizamos Sequelize con la base de datos
 sequelize.sync()
