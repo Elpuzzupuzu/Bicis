@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan'); // Importar Morgan
 const bicicletaController = require('./controllers/bicicletaController');
+const validarBicicleta = require('./middleware/validarBicicleta'); // Importa el middleware
 const sequelize = require('./config/database'); // Importamos la conexión
 
 const app = express();
@@ -17,10 +18,10 @@ app.get('/bicicletas', (req, res) => bicicletaController.obtenerBicicletas(req, 
 app.get('/bicicletas/:modelo', (req, res) => bicicletaController.obtenerBicicletaPorModelo(req, res));
 app.get('/bicicletas/id/:id', (req, res) => bicicletaController.obtenerBicicletaPorId(req, res)); // NUEVA RUTA POR ID
 
-app.post('/bicicletas', (req, res) => bicicletaController.crearBicicleta(req, res));
+// Aplica el middleware de validación aquí
+app.post('/bicicletas', validarBicicleta, (req, res) => bicicletaController.crearBicicleta(req, res));
 
 app.put('/bicicletas/:id', (req, res) => bicicletaController.actualizarBicicleta(req, res));
-
 
 // Sincronizamos Sequelize con la base de datos
 sequelize.sync()
