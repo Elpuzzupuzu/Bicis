@@ -14,7 +14,7 @@ const port = 3000;
 // habilita cors
 const allowedOrigins = [
   'http://127.0.0.1:5500', // Permitir solicitudes desde tu frontend local
-  'https://elpuzzupuzu.github.io/frontbikelike/' // Permitir solicitudes desde tu dominio GitHub Pages
+  'https://elpuzzupuzu.github.io' // Permitir solicitudes desde tu dominio GitHub Pages
 ];
 
 app.use(cors({
