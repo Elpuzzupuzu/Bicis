@@ -40,7 +40,7 @@ class AuthController {
         return res.status(401).json({ message: 'Contraseña incorrecta' });
       }
 
-      const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '30s' }); // Cambiado a 1 hora
+      const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '30s' }); 
       res.status(200).json({ 
         message: 'Inicio de sesión exitoso', 
         token 
