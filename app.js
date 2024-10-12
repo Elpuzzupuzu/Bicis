@@ -12,9 +12,17 @@ const app = express();
 const port = 3000;
 
 // habilita cors
+
+
 app.use(cors({
-  origin: 'https://bikelike.onrender.com' // Reemplaza con la URL de tu frontend
+  origin: 'http://127.0.0.1:5500', // Permitir solicitudes desde tu frontend local
+  methods: ['GET', 'POST'], // Métodos que deseas permitir
+  credentials: true // Permitir cookies (si es necesario)
 }));
+
+
+
+
 
 
 // Middleware para Morgan: registro de solicitudes HTTP
