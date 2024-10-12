@@ -12,7 +12,10 @@ const app = express();
 const port = 3000;
 
 // habilita cors
-app.use(cors()); // Habilitar CORS
+app.use(cors({
+  origin: 'https://bikelike.onrender.com' // Reemplaza con la URL de tu frontend
+}));
+
 
 // Middleware para Morgan: registro de solicitudes HTTP
 app.use(morgan('dev')); // Modo 'dev' muestra logs concisos de las solicitudes
