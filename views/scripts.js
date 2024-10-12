@@ -50,5 +50,53 @@ async function listarBicicletas() {
     }
 }
 
+// Función para agregar una nueva bicicleta
+document.getElementById('formBici').addEventListener('submit', async (event) => {
+    event.preventDefault(); // Prevenir el comportamiento predeterminado del formulario
+
+    const token = localStorage.getItem('token'); // Obtener el token de localStorage
+    const marca = document.getElementById('marca').value;
+    const modelo = document.getElementById('modelo').value;
+    const tipo = document.getElementById('tipo').value;
+    const tamaño = document.getElementById('tamaño').value;
+    const color = document.getElementById('color').value;
+    const precio = document.getElementById('precio').value;
+    const material = document.getElementById('material').value;
+    const peso = document.getElementById('peso').value;
+    const cambio = document.getElementById('cambio').value;
+    const disponible = document.getElementById('disponible').value === 'true'; // Convertir a booleano
+
+    const nuevaBici = {
+        marca,
+        modelo,
+        tipo,
+        tamaño,
+        color,
+        precio,
+        material,
+        peso,
+        cambio,
+        disponible,
+    };
+
+    const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`, // Incluir el token en el encabezado
+        },
+        body: JSON.stringify(nuevaBici), // Enviar el objeto como JSON
+    });
+
+    if (response.ok) {
+        alert('Bicicleta agregada exitosamente!');
+        document.getElementById('formBici').reset(); // Limpia el formulario
+        listarBicicletas(); // Recarga la lista de bicicletas
+    } else {
+        const errorData = await response.json();
+        alert(`Error al agregar la bicicleta: ${errorData.message}`);
+    }
+});
+
 // Llama a la función para listar bicicletas al cargar la página
 listarBicicletas();
