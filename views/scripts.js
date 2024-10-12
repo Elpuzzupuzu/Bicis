@@ -1,5 +1,5 @@
 // URL base de la API
-const apiUrl = 'http://localhost:3000/bicicletas';
+const apiUrl = 'https://bikelike.onrender.com/bicicletas';
 
 // Función para listar todas las bicicletas
 async function listarBicicletas() {
