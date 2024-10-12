@@ -2,7 +2,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
-const { JWT_SECRET } = require('../config/config'); // Importar la clave secreta
+const { JWT_SECRET } = require('../config/config');
 
 class AuthController {
   async register(req, res) {
@@ -17,9 +17,12 @@ class AuthController {
       const hashedPassword = await bcrypt.hash(password, 10);
       const newUser = await User.create({ email, password: hashedPassword });
 
-      res.status(201).json({ message: 'Usuario creado', user: { email: newUser.email } });
+      res.status(201).json({ 
+        message: 'Usuario creado', 
+        user: { email: newUser.email } 
+      });
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      res.status(500).json({ message: 'Error al crear el usuario', error: error.message });
     }
   }
 
@@ -37,10 +40,13 @@ class AuthController {
         return res.status(401).json({ message: 'Contraseña incorrecta' });
       }
 
-      const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '1h' });
-      res.status(200).json({ token });
+      const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '30s' }); // Cambiado a 1 hora
+      res.status(200).json({ 
+        message: 'Inicio de sesión exitoso', 
+        token 
+      });
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      res.status(500).json({ message: 'Error al iniciar sesión', error: error.message });
     }
   }
 }

@@ -3,55 +3,52 @@ const apiUrl = 'http://localhost:3000/bicicletas';
 
 // Función para listar todas las bicicletas
 async function listarBicicletas() {
-    const response = await fetch(apiUrl);
+    const token = localStorage.getItem('token'); // Obtener el token de localStorage
+
+    const response = await fetch(apiUrl, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // Incluir el token en el encabezado
+        }
+    });
+
+    // Verifica si el token ha caducado o es inválido
+    if (response.status === 401 || response.status === 403) {
+        alert('Tu sesión ha caducado. Por favor, inicia sesión de nuevo.');
+        localStorage.clear(); // Vaciar el localStorage
+        window.location.href = 'login.html'; // Cambia a la ruta de tu página de inicio de sesión
+        return;
+    }
+
+    if (!response.ok) {
+        // Manejo del error en otros códigos de error
+        const errorData = await response.json();
+        alert(`Error: ${errorData.message}`);
+        return;
+    }
+
     const bicicletas = await response.json();
     const tbody = document.querySelector("#tablaBicicletas tbody");
     tbody.innerHTML = '';
 
-    bicicletas.forEach(bici => {
-        const row = `<tr>
-            <td>${bici.id}</td>
-            <td>${bici.marca}</td>
-            <td>${bici.modelo}</td>
-            <td>${bici.tipo}</td>
-            <td>${bici.color}</td>
-            <td>${bici.precio}</td>
-        </tr>`;
-        tbody.innerHTML += row;
-    });
+    // Asegúrate de que bicicletas sea un array
+    if (Array.isArray(bicicletas)) {
+        bicicletas.forEach(bici => {
+            const row = `<tr>
+                <td>${bici.id}</td>
+                <td>${bici.marca}</td>
+                <td>${bici.modelo}</td>
+                <td>${bici.tipo}</td>
+                <td>${bici.color}</td>
+                <td>${bici.precio}</td>
+            </tr>`;
+            tbody.innerHTML += row;
+        });
+    } else {
+        console.error('La respuesta no es un array:', bicicletas);
+    }
 }
 
-// Función para agregar una nueva bicicleta
-document.getElementById('formBici').addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const nuevaBicicleta = {
-        marca: document.getElementById('marca').value,
-        modelo: document.getElementById('modelo').value,
-        tipo: document.getElementById('tipo').value,
-        tamaño: document.getElementById('tamaño').value,
-        color: document.getElementById('color').value,
-        precio: document.getElementById('precio').value,
-        material: document.getElementById('material').value,
-        peso: document.getElementById('peso').value,
-        cambio: document.getElementById('cambio').value,
-        disponible: document.getElementById('disponible').value === 'true'
-    };
-
-    const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(nuevaBicicleta)
-    });
-
-    if (response.ok) {
-        alert('Bicicleta creada con éxito');
-        listarBicicletas();  // Refresca la tabla de bicicletas
-        document.getElementById('formBici').reset();
-    } else {
-        const errorData = await response.json();
-        alert(`Error: ${errorData.message}`);
-    }
-});
+// Llama a la función para listar bicicletas al cargar la página
+listarBicicletas();

@@ -6,6 +6,7 @@ const bicicletaController = require('./controllers/bicicletaController');
 const validarBicicleta = require('./middleware/validarBicicleta'); // Importa el middleware
 const sequelize = require('./config/database'); // Importamos la conexión
 const authRoutes = require('./routes/authRoutes'); // Importar las rutas de autenticación
+const authMiddleware = require('./middleware/authMiddleware');
 
 const app = express();
 const port = 3000;
@@ -20,9 +21,12 @@ app.use(morgan('dev')); // Modo 'dev' muestra logs concisos de las solicitudes
 app.use(express.json());
 
 // Rutas de bicicletas
-app.get('/bicicletas', (req, res) => bicicletaController.obtenerBicicletas(req, res));
-app.get('/bicicletas/:modelo', (req, res) => bicicletaController.obtenerBicicletaPorModelo(req, res));
-app.get('/bicicletas/id/:id', (req, res) => bicicletaController.obtenerBicicletaPorId(req, res));
+
+
+app.get('/bicicletas', authMiddleware, (req, res) => bicicletaController.obtenerBicicletas(req, res));
+app.get('/bicicletas/:modelo', authMiddleware, (req, res) => bicicletaController.obtenerBicicletaPorModelo(req, res));
+app.get('/bicicletas/id/:id', authMiddleware, (req, res) => bicicletaController.obtenerBicicletaPorId(req, res));
+
 
 // Aplica el middleware de validación aquí
 app.post('/bicicletas', validarBicicleta, (req, res) => bicicletaController.crearBicicleta(req, res));
