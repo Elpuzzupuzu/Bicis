@@ -4,7 +4,41 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 const { JWT_SECRET } = require('../config/config');
 
+/**
+ * @swagger
+ * tags:
+ *   name: Auth
+ *   description: Gestión de autenticación de usuarios
+ */
 class AuthController {
+  
+  /**
+   * @swagger
+   * /auth/register:
+   *   post:
+   *     summary: Registrar un nuevo usuario
+   *     tags: [Auth]
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             properties:
+   *               email:
+   *                 type: string
+   *                 format: email
+   *               password:
+   *                 type: string
+   *                 format: password
+   *     responses:
+   *       201:
+   *         description: Usuario creado
+   *       400:
+   *         description: El usuario ya existe
+   *       500:
+   *         description: Error al crear el usuario
+   */
   async register(req, res) {
     const { email, password } = req.body;
 
@@ -26,6 +60,42 @@ class AuthController {
     }
   }
 
+  /**
+   * @swagger
+   * /auth/login:
+   *   post:
+   *     summary: Iniciar sesión con un usuario
+   *     tags: [Auth]
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             properties:
+   *               email:
+   *                 type: string
+   *                 format: email
+   *               password:
+   *                 type: string
+   *                 format: password
+   *     responses:
+   *       200:
+   *         description: Inicio de sesión exitoso
+   *         schema:
+   *           type: object
+   *           properties:
+   *             message:
+   *               type: string
+   *             token:
+   *               type: string
+   *       404:
+   *         description: Usuario no encontrado
+   *       401:
+   *         description: Contraseña incorrecta
+   *       500:
+   *         description: Error al iniciar sesión
+   */
   async login(req, res) {
     const { email, password } = req.body;
 

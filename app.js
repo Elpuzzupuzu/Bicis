@@ -1,46 +1,66 @@
 const express = require('express');
-const morgan = require('morgan'); // Importar Morgan
-const cors = require('cors'); // Importar CORS
+const morgan = require('morgan');
+const cors = require('cors');
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 
 const bicicletaController = require('./controllers/bicicletaController');
-const validarBicicleta = require('./middleware/validarBicicleta'); // Importa el middleware
-const sequelize = require('./config/database'); // Importamos la conexión
-const authRoutes = require('./routes/authRoutes'); // Importar las rutas de autenticación
+const validarBicicleta = require('./middleware/validarBicicleta');
+const sequelize = require('./config/database');
+const authRoutes = require('./routes/authRoutes');
 const authMiddleware = require('./middleware/authMiddleware');
 
 const app = express();
 const port = 3000;
 
-// habilita cors
+// Configuración de CORS
 const allowedOrigins = [
-  'http://127.0.0.1:5500', // Permitir solicitudes desde tu frontend local
-  'https://elpuzzupuzu.github.io' // Permitir solicitudes desde tu dominio GitHub Pages
+  'http://127.0.0.1:5500',
+  'https://elpuzzupuzu.github.io'
 ];
 
 app.use(cors({
-  origin: allowedOrigins, // Permitir solicitudes desde los orígenes especificados
-  methods: ['GET', 'POST', 'PUT'], // Métodos que deseas permitir (agregué PUT aquí ya que lo usas)
-  credentials: true // Permitir cookies (si es necesario)
+  origin: allowedOrigins,
+  methods: ['GET', 'POST', 'PUT'],
+  credentials: true
 }));
 
-// Middleware para Morgan: registro de solicitudes HTTP
-app.use(morgan('dev')); // Modo 'dev' muestra logs concisos de las solicitudes
-
-// Middleware para parsear JSON
+// Middleware para Morgan
+app.use(morgan('dev'));
 app.use(express.json());
+
+// Configuración de Swagger
+// Configuración de Swagger
+const swaggerOptions = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'API de Bicicletas',
+      version: '1.0.0',
+      description: 'Documentación de la API para gestionar bicicletas',
+    },
+    servers: [
+      { url: 'http://localhost:3000' }  // Corrige la URL colocando comillas
+    ]
+  },
+  apis: ['./controllers/*.js'], // Asegúrate de que las rutas de los archivos sean correctas
+};
+
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // Rutas de bicicletas
 app.get('/bicicletas', authMiddleware, (req, res) => bicicletaController.obtenerBicicletas(req, res));
 app.get('/bicicletas/:modelo', authMiddleware, (req, res) => bicicletaController.obtenerBicicletaPorModelo(req, res));
 app.get('/bicicletas/id/:id', authMiddleware, (req, res) => bicicletaController.obtenerBicicletaPorId(req, res));
 
-// Aplica el middleware de validación aquí
+// Aplica el middleware de validación
 app.post('/bicicletas', validarBicicleta, (req, res) => bicicletaController.crearBicicleta(req, res));
-
 app.put('/bicicletas/:id', (req, res) => bicicletaController.actualizarBicicleta(req, res));
 
 // Rutas de autenticación
-app.use('/auth', authRoutes); // Aquí se registran las rutas de autenticación
+app.use('/auth', authRoutes);
 
 // Sincronizamos Sequelize con la base de datos
 sequelize.sync()
