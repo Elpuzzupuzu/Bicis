@@ -1,7 +1,7 @@
 // models/Venta.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
-const User = require('./User'); // Importa el modelo de User
+const User = require('../models/user'); // Importa el modelo de User
 
 const Venta = sequelize.define('Venta', {
   id_venta: {
