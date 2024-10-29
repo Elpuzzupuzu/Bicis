@@ -4,7 +4,7 @@ document.getElementById('registerForm').addEventListener('submit', async (event)
     const email = document.getElementById('registerEmail').value;
     const password = document.getElementById('registerPassword').value;
 
-    const response = await fetch('https://bikelike.onrender.com/auth/register', {
+    const response = await fetch('https://bicis.onrender.com/auth/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -29,7 +29,7 @@ document.getElementById('loginForm').addEventListener('submit', async (event) =>
     const email = document.getElementById('loginEmail').value;
     const password = document.getElementById('loginPassword').value;
 
-    const response = await fetch('https://bikelike.onrender.com/auth/login', {
+    const response = await fetch('https://bicis.onrender.com/auth/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

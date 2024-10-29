@@ -8,6 +8,7 @@ const bicicletaController = require('./controllers/bicicletaController');
 const validarBicicleta = require('./middleware/validarBicicleta');
 const sequelize = require('./config/database');
 const authRoutes = require('./routes/authRoutes');
+const ventaRoutes = require('./routes/ventaRoutes'); // Importa las rutas de venta
 const authMiddleware = require('./middleware/authMiddleware');
 
 const app = express();
@@ -30,7 +31,6 @@ app.use(morgan('dev'));
 app.use(express.json());
 
 // Configuración de Swagger
-// Configuración de Swagger
 const swaggerOptions = {
   definition: {
     openapi: '3.0.0',
@@ -40,12 +40,11 @@ const swaggerOptions = {
       description: 'Documentación de la API para gestionar bicicletas',
     },
     servers: [
-      { url: 'http://localhost:3000' }  // Corrige la URL colocando comillas
+      { url: 'http://localhost:3000' }
     ]
   },
-  apis: ['./controllers/*.js'], // Asegúrate de que las rutas de los archivos sean correctas
+  apis: ['./controllers/*.js'],
 };
-
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
@@ -61,6 +60,9 @@ app.put('/bicicletas/:id', (req, res) => bicicletaController.actualizarBicicleta
 
 // Rutas de autenticación
 app.use('/auth', authRoutes);
+
+// Rutas de ventas
+app.use('/ventas', ventaRoutes); // Agrega las rutas de ventas aquí
 
 // Sincronizamos Sequelize con la base de datos
 sequelize.sync()

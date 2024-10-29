@@ -3,6 +3,11 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database'); // Importa la configuración de la base de datos
 
 const User = sequelize.define('User', {
+  id_user: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
   email: {
     type: DataTypes.STRING,
     allowNull: false,

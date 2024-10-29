@@ -24,7 +24,9 @@ class BicicletaRepository {
   }
 
 
-}
+
+
+}// fin repository
 
 
 
