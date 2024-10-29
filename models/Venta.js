@@ -22,6 +22,15 @@ const Venta = sequelize.define('Venta', {
     type: DataTypes.JSON,
     allowNull: false,
   },
+
+
+  total_compra:{
+    type : DataTypes.DOUBLE,
+    allowNull:false,    
+
+  },
+
+
   date_sell: {
     type: DataTypes.DATEONLY,
     defaultValue: DataTypes.NOW,

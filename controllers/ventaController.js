@@ -25,11 +25,15 @@ class VentaController {
   async getAllVentas(req, res) {
     try {
       const ventas = await VentaService.getAllVentas();
+      console.log(ventas); // Agrega esto para ver la respuesta
       res.status(200).json(ventas);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
   }
+  
+
+  
 
   async deleteVenta(req, res) {
     try {

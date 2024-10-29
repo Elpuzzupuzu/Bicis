@@ -1,0 +1,67 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 20px;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+h1 {
+    text-align: center;
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+}
+
+th {
+    background-color: #007bff;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+td {
+    border-bottom: 1px solid #dddddd;
+    color: #555;
+}
+
+tr:hover td {
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+
+/* Estilo de primera y última columna de cada fila */
+tr:first-child th:first-child,
+tr:first-child th:last-child,
+td:first-child,
+td:last-child {
+    border-radius: 8px;
+}
+
+/* Para los encabezados de tabla más resaltados */
+th:first-child {
+    text-align: center;
+}
+
+td ul {
+    padding-left: 20px;
+    margin: 0;
+}
+
+ul li {
+    margin: 5px 0;
+    color: #444;
+}
