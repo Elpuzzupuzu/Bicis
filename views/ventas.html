@@ -3,26 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Ventas</title>
-    <link rel="stylesheet" href="ventas.css"> <!-- Puedes incluir tu CSS aquí -->
+    <title>Listado de Ventas</title>
+    <link rel="stylesheet" href="ventas.css"> <!-- Si tienes estilos CSS -->
 </head>
 <body>
-    <h1>Lista de Ventas</h1>
-    <table id="ventasTable">
-        <thead>
-            <tr>
-                <th>ID Venta</th>
-                <th>ID Usuario</th>
-                <th>Artículos</th>
-                <th>Total Compra</th>
-                <th>Fecha de Venta</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Las ventas se agregarán aquí dinámicamente -->
-        </tbody>
-    </table>
+    <h1>Listado de Ventas</h1>
+    <button id="loadSales">Cargar Ventas</button>
+    <div id="salesContainer"></div>
 
-    <script src="script.js"></script>
+    <script src="ventas.js"></script>
 </body>
 </html>

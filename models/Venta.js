@@ -22,15 +22,14 @@ const Venta = sequelize.define('Venta', {
     type: DataTypes.JSON,
     allowNull: false,
   },
-
-
-  total_compra:{
-    type : DataTypes.DOUBLE,
-    allowNull:false,    
-
+  total_compra: {
+    type: DataTypes.DOUBLE,
+    allowNull: false,
   },
-
-
+  direccion_entrega: {  // Nuevo campo
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   date_sell: {
     type: DataTypes.DATEONLY,
     defaultValue: DataTypes.NOW,
@@ -45,4 +44,3 @@ User.hasMany(Venta, { foreignKey: 'id_user' });
 Venta.belongsTo(User, { foreignKey: 'id_user' });
 
 module.exports = Venta;
-

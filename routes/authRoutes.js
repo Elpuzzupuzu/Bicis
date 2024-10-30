@@ -17,3 +17,4 @@ router.get('/profile', authMiddleware, (req, res) => {
 });
 
 module.exports = router;
+ 
